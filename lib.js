@@ -10,12 +10,20 @@ const createKey = secret => {
     .digest("hex");
 };
 
+const getConfigFileName = (defaultName = ".git-secret") => {
+  const customConfig = process.env.GIT_SECRETS_CONFIG;
+  return customConfig ? customConfig : defaultName;
+};
+
 const addSecretFile = lp => {
-  fs.appendFileSync(path.join(process.cwd(), ".git-secret"), "\n" + lp);
+  fs.appendFileSync(path.join(process.cwd(), getConfigFileName()), "\n" + lp);
 };
 
 const init = () => {
-  fs.writeFileSync(path.join(process.cwd(), ".git-secret"), "secrets.json");
+  fs.writeFileSync(
+    path.join(process.cwd(), getConfigFileName()),
+    "secrets.json"
+  );
   fs.writeFileSync(
     path.join(process.cwd(), "secrets.json"),
     JSON.stringify({})
@@ -24,7 +32,7 @@ const init = () => {
 
 const getSecretFiles = () => {
   const secret_files = fs.readFileSync(
-    path.join(process.cwd(), ".git-secret"),
+    path.join(process.cwd(), getConfigFileName()),
     "utf-8"
   );
   const files = secret_files.split("\n");

@@ -51,11 +51,6 @@ const main = async (cmd, args = {}) => {
         lib.hide(files, key);
         break;
 
-      case "ADD_SECRET_FILE":
-        const { path } = args;
-        lib.addSecretFile(path);
-        break;
-
       case "INIT":
         lib.init();
         break;
