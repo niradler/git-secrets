@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "main": "index.js",
   "bin": {
-    "git-secrets": "cli.js"
+    "git-secrets": "git-secrets"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
