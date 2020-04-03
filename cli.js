@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 const main = require("./main");
+const Yargs = require("yargs"); // eslint-disable-line
 
-require("yargs") // eslint-disable-line
-  .command(
-    "init",
-    "init git secrets files.",
-    yargs => {},
-    argv => {
-      if (argv.v) console.log(argv);
-      main("INIT", argv);
-    }
-  )
+Yargs.usage("git-secrets [command]");
+
+Yargs.command(
+  "init",
+  "init git secrets files.",
+  yargs => {},
+  argv => {
+    if (argv.v) console.log(argv);
+    main("INIT", argv);
+  }
+)
   .command(
     "add",
     "add secret file.",
@@ -70,3 +72,7 @@ require("yargs") // eslint-disable-line
     type: "boolean",
     description: "Run with verbose logging"
   }).argv;
+
+if (Yargs.argv["_"].length == 0) {
+  Yargs.showHelp();
+}
