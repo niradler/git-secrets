@@ -57,8 +57,7 @@ const main = async (cmd, args = {}) => {
         break;
 
       case "INIT":
-        const { path } = args;
-        lib.init(filename);
+        lib.init();
         break;
 
       default:

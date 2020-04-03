@@ -14,6 +14,14 @@ const addSecretFile = lp => {
   fs.appendFileSync(path.join(process.cwd(), ".git-secret"), "\n" + lp);
 };
 
+const init = () => {
+  fs.writeFileSync(path.join(process.cwd(), ".git-secret"), "secrets.json");
+  fs.writeFileSync(
+    path.join(process.cwd(), "secrets.json"),
+    JSON.stringify({})
+  );
+};
+
 const getSecretFiles = () => {
   const secret_files = fs.readFileSync(
     path.join(process.cwd(), ".git-secret"),
@@ -54,5 +62,6 @@ module.exports = {
   getSecretFiles,
   addSecretFile,
   reveal,
-  exitWith
+  exitWith,
+  init
 };
