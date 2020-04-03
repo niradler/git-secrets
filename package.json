@@ -1,11 +1,28 @@
 {
   "name": "git-secrets",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.2",
   "main": "index.js",
+  "bin": {
+    "git-secrets": "cli.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Nir Adler",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niradler/git-secrets.git"
+  },
+  "keywords": [
+    "git",
+    "commit",
+    "keys",
+    "encryption"
+  ],
+  "bugs": {
+    "url": "https://github.com/niradler/git-secrets/issues"
+  },
+  "homepage": "https://github.com/niradler/git-secrets#readme",
+  "description": "Store encrypted keys in git."
 }
