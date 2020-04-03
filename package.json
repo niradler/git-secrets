@@ -1,9 +1,9 @@
 {
   "name": "git-secrets",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "index.js",
   "bin": {
-    "git-secrets": "git-secrets"
+    "git-secrets": "git-secrets.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
