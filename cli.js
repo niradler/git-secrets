@@ -7,6 +7,7 @@ require("yargs") // eslint-disable-line
     "init git secrets files.",
     yargs => {},
     argv => {
+      if (argv.v) console.log(argv);
       main("INIT", argv);
     }
   )
@@ -18,8 +19,13 @@ require("yargs") // eslint-disable-line
         describe: "ignore file not exists.",
         default: false
       });
+      yargs.positional("path", {
+        describe: "path to add.",
+        require: true
+      });
     },
     argv => {
+      if (argv.v) console.log(argv);
       main("ADD_SECRET_FILE", argv);
     }
   )
@@ -31,8 +37,13 @@ require("yargs") // eslint-disable-line
         describe: "ignore file not exists.",
         default: false
       });
+      yargs.positional("key", {
+        describe: "decryption key.",
+        require: true
+      });
     },
     argv => {
+      if (argv.v) console.log(argv);
       main("REVEAL", argv);
     }
   )
@@ -44,8 +55,13 @@ require("yargs") // eslint-disable-line
         describe: "ignore file not exists.",
         default: false
       });
+      yargs.positional("key", {
+        describe: "encryption key.",
+        require: true
+      });
     },
     argv => {
+      if (argv.v) console.log(argv);
       main("HIDE", argv);
     }
   )

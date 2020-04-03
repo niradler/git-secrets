@@ -8,55 +8,63 @@ const main = async (cmd, args = {}) => {
   try {
     switch (cmd) {
       case "ADD_SECRET_FILE":
-        const { path, ignore } = args;
-        if (!ignore) {
-          const found = await fileExists(Path.join(process.cwd(), path));
-          if (!found) throw new Error("File not found.");
+        {
+          const { path, ignore } = args;
+          if (!ignore) {
+            const found = await fileExists(Path.join(process.cwd(), path));
+            if (!found) throw new Error("File not found.");
+          }
+          lib.addSecretFile(args.path);
         }
-
-        lib.addSecretFile(args.path);
         break;
 
       case "REVEAL":
-        const { ignore, code } = args;
-        const key = lib.createKey(code);
-        let files = lib.getSecretFiles();
-        if (ignore) {
-          const promises = files.map(p =>
-            fileExists(Path.join(process.cwd(), p)).then(e => ({
-              exists: e,
-              path: p
-            }))
-          );
-          const exists = await Promise.all(promises);
-          files = exists.filter(e => e.exists).map(e => e.path);
+        {
+          const { ignore, key } = args;
+          const code = lib.createKey(key);
+          let files = lib.getSecretFiles();
+          if (ignore) {
+            const promises = files.map(p =>
+              fileExists(Path.join(process.cwd(), p)).then(e => ({
+                exists: e,
+                path: p
+              }))
+            );
+            const exists = await Promise.all(promises);
+            files = exists.filter(e => e.exists).map(e => e.path);
+          }
+          lib.reveal(files, code);
         }
-        lib.reveal(files, key);
         break;
 
       case "HIDE":
-        const { ignore, code } = args;
-        const key = lib.createKey(code);
-        let files = lib.getSecretFiles();
-        if (ignore) {
-          const promises = files.map(p =>
-            fileExists(Path.join(process.cwd(), p)).then(e => ({
-              exists: e,
-              path: p
-            }))
-          );
-          const exists = await Promise.all(promises);
-          files = exists.filter(e => e.exists).map(e => e.path);
+        {
+          const { ignore, key } = args;
+          const code = lib.createKey(key);
+          let files = lib.getSecretFiles();
+          if (ignore) {
+            const promises = files.map(p =>
+              fileExists(Path.join(process.cwd(), p)).then(e => ({
+                exists: e,
+                path: p
+              }))
+            );
+            const exists = await Promise.all(promises);
+            files = exists.filter(e => e.exists).map(e => e.path);
+          }
+          lib.hide(files, code);
         }
-        lib.hide(files, key);
         break;
 
       case "INIT":
-        lib.init();
+        {
+          lib.init();
+        }
         break;
 
-      default:
+      default: {
         throw new Error("cmd not found");
+      }
     }
 
     lib.exitWith(0, "Complete!");
