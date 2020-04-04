@@ -41,7 +41,6 @@ Yargs.command(
       });
       yargs.positional("key", {
         describe: "decryption key.",
-        require: true,
       });
     },
     (argv) => {
@@ -59,7 +58,6 @@ Yargs.command(
       });
       yargs.positional("key", {
         describe: "encryption key.",
-        require: true,
       });
     },
     (argv) => {
