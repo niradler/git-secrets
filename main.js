@@ -9,8 +9,8 @@ const main = async (cmd, args = {}) => {
     switch (cmd) {
       case "ADD_SECRET_FILE":
         {
-          const { path } = args;
-          if (!args.catch) {
+          const { path, ignore } = args;
+          if (ignore) {
             const found = await fileExists(Path.join(process.cwd(), path));
             if (!found) throw new Error("File not found.");
           }
@@ -71,6 +71,7 @@ const main = async (cmd, args = {}) => {
 
     lib.exitWith(0, "Complete!");
   } catch (error) {
+    if (args.v) console.log(error);
     const minor = ["Already a secret.", "Not a secret."];
     if (args.catch && minor.includes(error.message)) {
       console.log("catch minor turn on, exiting gracefully.");

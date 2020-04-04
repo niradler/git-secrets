@@ -32,7 +32,7 @@ const getSecretFiles = () => {
     path.join(process.cwd(), getConfigFileName()),
     "utf-8"
   );
-  const files = secret_files.split("\n");
+  const files = secret_files.split("\n").map((f) => f.replace(/\r/gi, ""));
 
   return files;
 };
