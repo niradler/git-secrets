@@ -20,7 +20,8 @@ const main = async (cmd, args = {}) => {
 
       case "REVEAL":
         {
-          const { key, ignore } = args;
+          let { key, ignore } = args;
+          key = lib.getKey(key);
           const code = lib.createKey(key);
           let files = lib.getSecretFiles();
           if (ignore) {
@@ -40,6 +41,7 @@ const main = async (cmd, args = {}) => {
       case "HIDE":
         {
           const { key, ignore } = args;
+          key = lib.getKey(key);
           const code = lib.createKey(key);
           let files = lib.getSecretFiles();
           if (ignore) {

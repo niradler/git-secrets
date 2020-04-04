@@ -3,19 +3,16 @@ const path = require("path");
 const crypto = require("crypto");
 const encryption = require("./encryption");
 
-const createKey = secret => {
-  return crypto
-    .createHash("md5")
-    .update(secret)
-    .digest("hex");
+const createKey = (secret) => {
+  return crypto.createHash("md5").update(secret).digest("hex");
 };
 
-const getConfigFileName = (defaultName = ".git-secret") => {
+const getConfigFileName = (defaultName = ".git-secrets") => {
   const customConfig = process.env.GIT_SECRETS_CONFIG;
   return customConfig ? customConfig : defaultName;
 };
 
-const addSecretFile = lp => {
+const addSecretFile = (lp) => {
   fs.appendFileSync(path.join(process.cwd(), getConfigFileName()), "\n" + lp);
 };
 
@@ -41,7 +38,7 @@ const getSecretFiles = () => {
 };
 
 const hide = (files, code) => {
-  files.forEach(p => {
+  files.forEach((p) => {
     const filePath = path.join(process.cwd(), p);
     const file = fs.readFileSync(filePath, "utf-8");
     fs.writeFileSync(filePath, encryption.encrypt(file, code));
@@ -49,7 +46,7 @@ const hide = (files, code) => {
 };
 
 const reveal = (files, code) => {
-  files.forEach(p => {
+  files.forEach((p) => {
     const filePath = path.join(process.cwd(), p);
     const file = fs.readFileSync(filePath, "utf-8");
     const data = encryption.decrypt(file, code);
@@ -64,12 +61,39 @@ const exitWith = (code = 0, message) => {
   process.exit(code);
 };
 
+const getKey = (key) => {
+  const steps = ["env", "file"];
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
+    switch (step) {
+      case "env":
+        if (!key) key = process.env.GIT_SECRETS_KEY;
+        break;
+      case "file":
+        try {
+          if (!key)
+            key = fs
+              .readFileSync(path.join(process.cwd(), ".git-secrets.key"))
+              .toString();
+        } catch (error) {}
+        break;
+    }
+  }
+  if (!key) {
+    throw new Error(
+      "key must be provided, as a param or as an env variable (GIT_SECRETS_KEY) or as a file (git-secrets.key)"
+    );
+  }
+
+  return key;
+};
 module.exports = {
+  getKey,
   createKey,
   hide,
   getSecretFiles,
   addSecretFile,
   reveal,
   exitWith,
-  init
+  init,
 };
