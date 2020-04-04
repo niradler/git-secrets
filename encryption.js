@@ -4,8 +4,7 @@ const decrypt = (data, key) => {
   const [isSecret, ivHex, encoded] = data.split(":");
 
   if (isSecret != "secret") {
-    console.error("Not a secret.");
-    process.exit(1);
+    throw new Error("Not a secret.");
   }
 
   const decipher = crypto.createDecipheriv(
@@ -23,17 +22,14 @@ const decrypt = (data, key) => {
 const encrypt = (data, key) => {
   const [isSecret] = data.split(":");
   if (isSecret == "secret") {
-    console.error("Already a secret.");
-    process.exit(1);
+    throw new Error("Already a secret.");
   }
 
   const IV_LENGTH = 16;
 
-  if (!key)
-    if (!key) {
-      console.error("Please ensure that an encryption key is provided.");
-      process.exit(1);
-    }
+  if (!key) {
+    throw new Error("Please ensure that an encryption key is provided.");
+  }
 
   const iv = crypto.randomBytes(IV_LENGTH);
   const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
@@ -46,5 +42,5 @@ const encrypt = (data, key) => {
 
 module.exports = {
   encrypt,
-  decrypt
+  decrypt,
 };

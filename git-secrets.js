@@ -7,8 +7,8 @@ Yargs.usage("git-secrets [command]");
 Yargs.command(
   "init",
   "init git secrets files.",
-  yargs => {},
-  argv => {
+  (yargs) => {},
+  (argv) => {
     if (argv.v) console.log(argv);
     main("INIT", argv);
   }
@@ -16,17 +16,17 @@ Yargs.command(
   .command(
     "add",
     "add secret file.",
-    yargs => {
+    (yargs) => {
       yargs.positional("ignore", {
         describe: "ignore file not exists.",
-        default: false
+        default: false,
       });
       yargs.positional("path", {
         describe: "path to add.",
-        require: true
+        require: true,
       });
     },
-    argv => {
+    (argv) => {
       if (argv.v) console.log(argv);
       main("ADD_SECRET_FILE", argv);
     }
@@ -34,17 +34,17 @@ Yargs.command(
   .command(
     "reveal",
     "reveal all secrets file.",
-    yargs => {
+    (yargs) => {
       yargs.positional("ignore", {
         describe: "ignore file not exists.",
-        default: false
+        default: false,
       });
       yargs.positional("key", {
         describe: "decryption key.",
-        require: true
+        require: true,
       });
     },
-    argv => {
+    (argv) => {
       if (argv.v) console.log(argv);
       main("REVEAL", argv);
     }
@@ -52,25 +52,29 @@ Yargs.command(
   .command(
     "hide",
     "hide all secrets file.",
-    yargs => {
+    (yargs) => {
       yargs.positional("ignore", {
         describe: "ignore file not exists.",
-        default: false
+        default: false,
       });
       yargs.positional("key", {
         describe: "encryption key.",
-        require: true
+        require: true,
       });
     },
-    argv => {
+    (argv) => {
       if (argv.v) console.log(argv);
       main("HIDE", argv);
     }
   )
+  .option("catch", {
+    type: "boolean",
+    description: "catch minor errors and ignore them. (exitCode=0)",
+  })
   .option("verbose", {
     alias: "v",
     type: "boolean",
-    description: "Run with verbose logging"
+    description: "Run with verbose logging",
   }).argv;
 
 if (Yargs.argv["_"].length == 0) {

@@ -9,29 +9,29 @@ const main = async (cmd, args = {}) => {
     switch (cmd) {
       case "ADD_SECRET_FILE":
         {
-          const { path, ignore } = args;
-          if (!ignore) {
+          const { path } = args;
+          if (!args.catch) {
             const found = await fileExists(Path.join(process.cwd(), path));
             if (!found) throw new Error("File not found.");
           }
-          lib.addSecretFile(args.path);
+          lib.addSecretFile(path);
         }
         break;
 
       case "REVEAL":
         {
-          const { ignore, key } = args;
+          const { key, ignore } = args;
           const code = lib.createKey(key);
           let files = lib.getSecretFiles();
           if (ignore) {
-            const promises = files.map(p =>
-              fileExists(Path.join(process.cwd(), p)).then(e => ({
+            const promises = files.map((p) =>
+              fileExists(Path.join(process.cwd(), p)).then((e) => ({
                 exists: e,
-                path: p
+                path: p,
               }))
             );
             const exists = await Promise.all(promises);
-            files = exists.filter(e => e.exists).map(e => e.path);
+            files = exists.filter((e) => e.exists).map((e) => e.path);
           }
           lib.reveal(files, code);
         }
@@ -39,18 +39,18 @@ const main = async (cmd, args = {}) => {
 
       case "HIDE":
         {
-          const { ignore, key } = args;
+          const { key, ignore } = args;
           const code = lib.createKey(key);
           let files = lib.getSecretFiles();
           if (ignore) {
-            const promises = files.map(p =>
-              fileExists(Path.join(process.cwd(), p)).then(e => ({
+            const promises = files.map((p) =>
+              fileExists(Path.join(process.cwd(), p)).then((e) => ({
                 exists: e,
-                path: p
+                path: p,
               }))
             );
             const exists = await Promise.all(promises);
-            files = exists.filter(e => e.exists).map(e => e.path);
+            files = exists.filter((e) => e.exists).map((e) => e.path);
           }
           lib.hide(files, code);
         }
@@ -69,7 +69,11 @@ const main = async (cmd, args = {}) => {
 
     lib.exitWith(0, "Complete!");
   } catch (error) {
-    lib.exitWith(1, error.message);
+    const minor = ["Already a secret.", "Not a secret."];
+    if (args.catch && minor.includes(error.message)) {
+      console.log("catch minor turn on, exiting gracefully.");
+      lib.exitWith(0, error.message);
+    } else lib.exitWith(1, error.message);
   }
 };
 
