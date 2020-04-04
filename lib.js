@@ -81,7 +81,7 @@ const getKey = (key) => {
   }
   if (!key) {
     throw new Error(
-      "key must be provided, as a param or as an env variable (GIT_SECRETS_KEY) or as a file (git-secrets.key)"
+      "key must be provided, as a param or as an env variable (GIT_SECRETS_KEY) or as a file (.git-secrets.key)"
     );
   }
 
