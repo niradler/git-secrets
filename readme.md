@@ -21,6 +21,7 @@ git-secrets init
 ### Examples
 
 [examples repository](https://github.com/niradler/git-secrets-examples)
+[blog post](https://niradler.com/commit-secrets-to-git-encrypted/)
 
 ## License
 
