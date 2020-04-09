@@ -18,6 +18,8 @@ git-secrets help
 git-secrets init
 ```
 
+environment variable supported: GIT_SECRETS_KEY, GIT_SECRETS_CONFIG
+
 ### Examples
 
 [examples repository](https://github.com/niradler/git-secrets-examples)
